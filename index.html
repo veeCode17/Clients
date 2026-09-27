@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA | Fine Art Wedding Photography</title>
+    
+    <!-- Premium Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    
+    <!-- GSAP for Premium Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            --bg-main: #0a0a0a; /* Deep Charcoal / Black */
+            --bg-alt: #121212;
+            --text-main: #f4f4f4;
+            --text-muted: #999999;
+            --accent: #C5A059; /* Warm Champagne Gold */
+            --glass-bg: rgba(10, 10, 10, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Lato', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: opacity 0.3s ease, color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--accent);
+        }
+
+        /* --- Glassmorphism Navigation --- */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            color: var(--text-main);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            object-fit: cover;
+            z-index: -2;
+            opacity: 0.7; /* Darken the image slightly */
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, var(--bg-main) 0%, rgba(10, 10, 10, 0.2) 50%, rgba(0,0,0,0.5) 100%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            text-align: center;
+            padding: 0 5%;
+            margin-top: 15vh;
+        }
+
+        .hero-subtitle {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            display: block;
+            overflow: hidden;
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: clamp(3.5rem, 8vw, 7rem);
+            line-height: 1.1;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            font-style: italic;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .hero-title span {
+            display: block;
+        }
+
+        .hero-desc {
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: #d0d0d0;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        /* --- Layout Utilities --- */
+        section {
+            padding: 8rem 5%;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: 5rem;
+            text-align: center;
+        }
+
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: 3rem;
+            font-weight: 400;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        /* --- Collections / Services --- */
+        .collections-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4rem;
+            border-top: 1px solid var(--glass-border);
+            padding-top: 4rem;
+        }
+
+        .collection-item {
+            text-align: center;
+        }
+
+        .collection-icon {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-family: var(--font-serif);
+            font-style: italic;
+        }
+
+        .collection-item h3 {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .collection-item p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        /* --- Masonry Portfolio Gallery --- */
+        .gallery-container {
+            columns: 3 350px;
+            column-gap: 1.5rem;
+        }
+
+        .gallery-item {
+            margin-bottom: 1.5rem;
+            break-inside: avoid;
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            transition: transform 1s cubic-bezier(0.165, 0.84, 0.44, 1), filter 0.5s ease;
+            filter: brightness(0.8) grayscale(15%);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.03);
+            filter: brightness(1.05) grayscale(0%);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0,0,0,0) 60%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2rem;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            color: white;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-overlay h4 {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            margin-bottom: 0.3rem;
+            font-style: italic;
+        }
+
+        .gallery-overlay p {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+        }
+
+        /* --- Featured Story --- */
+        .featured {
+            background-color: var(--bg-alt);
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+        }
+
+        .featured-image {
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .featured-image img {
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.85);
+        }
+
+        .featured-content {
+            padding: 5rem 10%;
+        }
+
+        .featured-content h4 {
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .featured-content h2 {
+            font-family: var(--font-serif);
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 2rem;
+        }
+
+        .featured-content p {
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2.5rem;
+            border: 1px solid var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            position: relative;
+            overflow: hidden;
+            transition: color 0.4s ease, border-color 0.4s ease;
+            cursor: pointer;
+            background: transparent;
+            color: var(--text-main);
+            text-align: center;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.5s cubic-bezier(0.86, 0, 0.07, 1);
+            z-index: -1;
+        }
+
+        .btn:hover {
+            color: var(--bg-main);
+        }
+
+        .btn:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* --- About Section --- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-family: var(--font-serif);
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .about-text p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-image img {
+            border-radius: 4px;
+            filter: brightness(0.9) contrast(1.1);
+        }
+
+        /* --- Contact Section --- */
+        .contact {
+            background: #050505;
+            text-align: center;
+            padding: 10rem 5%;
+        }
+
+        .contact-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--bg-alt);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 5rem 4rem;
+            border-radius: 8px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .contact-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+            text-align: left;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 1rem 0;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-bottom-color: var(--accent);
+        }
+
+        .contact-form textarea {
+            resize: none;
+            height: 80px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .btn-whatsapp {
+            border-color: #25D366;
+            color: #25D366;
+            gap: 10px;
+        }
+        
+        .btn-whatsapp::before {
+            background: #25D366;
+        }
+        
+        .btn-whatsapp:hover {
+            color: #050505;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            background: var(--bg-main);
+        }
+
+        /* --- Lightbox --- */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.98);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            backdrop-filter: blur(15px);
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90vh;
+            width: auto;
+            object-fit: contain;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            border-radius: 4px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 3rem;
+            font-size: 3rem;
+            color: var(--text-main);
+            cursor: pointer;
+            font-family: var(--font-sans);
+            font-weight: 300;
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 992px) {
+            .featured { grid-template-columns: 1fr; }
+            .featured-image { height: 60vh; }
+            .about-grid { grid-template-columns: 1fr; }
+            .collections-grid { grid-template-columns: 1fr; gap: 3rem; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .gallery-container { columns: 2 200px; }
+            .hero-title { font-size: 3rem; }
+            .contact-wrapper { padding: 3rem 2rem; }
+            .contact-form { grid-template-columns: 1fr; }
+            .action-buttons { flex-direction: column; }
+        }
+        
+        @media (max-width: 480px) {
+            .gallery-container { columns: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">AURA.</div>
+        <div class="nav-links">
+            <a href="#portfolio">Journal</a>
+            <a href="#collections">Collections</a>
+            <a href="#about">The Artist</a>
+            <a href="#contact">Inquire</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <!-- Cinematic moody background image -->
+        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070&auto=format&fit=crop" class="hero-bg" alt="Elegant Wedding Background">
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content">
+            <span class="hero-subtitle gs-reveal">Fine Art Wedding Photography</span>
+            <h1 class="hero-title">
+                <span class="gs-reveal">Documenting</span>
+                <span class="gs-reveal">Generational Love</span>
+            </h1>
+            <p class="hero-desc gs-reveal">Creating timeless, heirloom-quality imagery through a moody editorial lens and authentic storytelling.</p>
+        </div>
+    </header>
+
+    <!-- Services / Collections -->
+    <section id="collections">
+        <div class="section-header gs-fade-up">
+            <h2 class="section-title">The Experience</h2>
+            <p style="color: var(--text-muted);">Curated coverage for your most profound moments.</p>
+        </div>
+        <div class="collections-grid">
+            <div class="collection-item gs-fade-up">
+                <div class="collection-icon">I</div>
+                <h3>Grand Celebrations</h3>
+                <p>Comprehensive, multi-day coverage designed for exquisite cultural weddings and grand destination affairs. We capture both the majestic scale and the intimate nuances.</p>
+            </div>
+            <div class="collection-item gs-fade-up" style="transition-delay: 0.1s;">
+                <div class="collection-icon">II</div>
+                <h3>Intimate Elopements</h3>
+                <p>For the couple prioritizing presence over production. Quiet, breathtaking documentation of your vows in the world's most beautiful, hidden locations.</p>
+            </div>
+            <div class="collection-item gs-fade-up" style="transition-delay: 0.2s;">
+                <div class="collection-icon">III</div>
+                <h3>Couples & Engagement</h3>
+                <p>Editorial-style portrait sessions capturing the raw chemistry and authentic dynamic of your relationship before the wedding day arrives.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Masonry Portfolio Gallery -->
+    <section id="portfolio" style="padding-top: 2rem;">
+        <div class="section-header gs-fade-up">
+            <h2 class="section-title">The Journal</h2>
+        </div>
+        
+        <div class="gallery-container">
+            <!-- Mix of 9:16 Vertical and 16:9 Landscape aspect ratios -->
+            
+            <div class="gallery-item gs-fade-up">
+                <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?q=80&w=800&h=1422&auto=format&fit=crop" alt="Bride Portrait">
+                <div class="gallery-overlay">
+                    <h4>Aria & James</h4>
+                    <p>Lake Como, Italy</p>
+                </div>
+            </div>
+
+            <div class="gallery-item gs-fade-up">
+                <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1200&h=675&auto=format&fit=crop" alt="Wedding Details Rings">
+                <div class="gallery-overlay">
+                    <h4>The Details</h4>
+                    <p>Heirloom Pieces</p>
+                </div>
+            </div>
+
+            <div class="gallery-item gs-fade-up">
+                <img src="https://images.unsplash.com/photo-1544078751-58fee2d8a03b?q=80&w=800&h=1422&auto=format&fit=crop" alt="Couple Walking">
+                <div class="gallery-overlay">
+                    <h4>Priya & Rohan</h4>
+                    <p>Udaipur Palace</p>
+                </div>
+            </div>
+
+            <div class="gallery-item gs-fade-up">
+                <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=1200&h=675&auto=format&fit=crop" alt="Cinematic Landscape Wedding">
+                <div class="gallery-overlay">
+                    <h4>Golden Hour</h4>
+                    <p>Tuscany Estate</p>
+                </div>
+            </div>
+
+            <div class="gallery-item gs-fade-up">
+                <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=800&h=1200&auto=format&fit=crop" alt="Groom Preparation">
+                <div class="gallery-overlay">
+                    <h4>Quiet Moments</h4>
+                    <p>Pre-ceremony</p>
+                </div>
+            </div>
+
+            <div class="gallery-item gs-fade-up">
+                <img src="https://images.unsplash.com/photo-1606216794074-735e91aa2c92?q=80&w=800&h=1422&auto=format&fit=crop" alt="Cultural Ceremony">
+                <div class="gallery-overlay">
+                    <h4>Tradition</h4>
+                    <p>Mumbai, India</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item gs-fade-up">
+                <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=800&h=1000&auto=format&fit=crop" alt="Bridal Wear">
+                <div class="gallery-overlay">
+                    <h4>The Silhouette</h4>
+                    <p>Bridal Portraits</p>
+                </div>
+            </div>
+
+             <div class="gallery-item gs-fade-up">
+                <img src="https://images.unsplash.com/photo-1532712938730-4e36bd55fd5c?q=80&w=1200&h=675&auto=format&fit=crop" alt="Reception Dance">
+                <div class="gallery-overlay">
+                    <h4>The Celebration</h4>
+                    <p>Evening Reception</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Real Wedding -->
+    <section class="featured" id="featured">
+        <div class="featured-image">
+            <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=1200&h=1600&auto=format&fit=crop" alt="Featured Wedding" class="parallax-img">
+        </div>
+        <div class="featured-content gs-fade-up">
+            <h4>Featured Love Story</h4>
+            <h2>A Royal Affair in Rajasthan</h2>
+            <p>A mesmerizing three-day celebration blending rich cultural heritage with modern luxury. From the vivid colors of the Haldi ceremony to the emotional exchange of garlands at sunset, this visual essay captures the essence of a truly unforgettable union amidst historic architecture.</p>
+            <button class="btn">View Full Gallery</button>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="about-grid">
+            <div class="about-text gs-fade-up">
+                <h2>The Storyteller</h2>
+                <p>I believe that your wedding photographs should feel like poetry—honest, elegant, and deeply moving. My approach blends moody, fine art editorial composition with a photojournalistic soul, ensuring that every glance, tear, and laugh is preserved authentically.</p>
+                <p>With a deep appreciation for shadow, natural light, and breathtaking environments, I travel globally to document love stories for discerning couples who value cinematic legacy.</p>
+            </div>
+            <div class="about-image gs-fade-up">
+                <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=800&h=1000&auto=format&fit=crop" alt="Photographer behind the lens">
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="contact-wrapper gs-fade-up">
+            <h2 class="section-title">Reserve Your Date</h2>
+            <p style="color: var(--text-muted);">Currently accepting commissions for 2026 and 2027.</p>
+            
+            <form class="contact-form" onsubmit="event.preventDefault(); alert('Inquiry Sent successfully!');">
+                <div class="input-group">
+                    <input type="text" placeholder="Partner 1 Name" required>
+                </div>
+                <div class="input-group">
+                    <input type="text" placeholder="Partner 2 Name" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" placeholder="Email Address" required>
+                </div>
+                <div class="input-group">
+                    <input type="text" placeholder="Wedding Date (or tentative)">
+                </div>
+                <div class="input-group full-width">
+                    <input type="text" placeholder="Venue & Location (City, Country)">
+                </div>
+                <div class="input-group full-width">
+                    <textarea placeholder="Tell me about your vision for the day..." required></textarea>
+                </div>
+                
+                <div class="full-width action-buttons">
+                    <button type="submit" class="btn">Submit Inquiry</button>
+                    <!-- Direct WhatsApp Integration -->
+                    <a href="https://wa.me/1234567890?text=Hello!%20We%20would%20love%20to%20inquire%20about%20your%20wedding%20photography%20services." target="_blank" class="btn btn-whatsapp">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+                        </svg>
+                        Inquire via WhatsApp
+                    </a>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 AURA PHOTOGRAPHY. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+    <!-- Lightbox Element -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img src="" alt="Fullscreen view" id="lightbox-img">
+    </div>
+
+    <!-- Scripts for Animations & Interactivity -->
+    <script>
+        // Register GSAP ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 1. Hero Load Animations
+        const tl = gsap.timeline();
+        tl.from(".hero-bg", { scale: 1.1, duration: 2.5, ease: "power2.out" })
+          .from(".gs-reveal", { 
+              y: 50, 
+              opacity: 0, 
+              duration: 1.2, 
+              stagger: 0.2, 
+              ease: "power3.out" 
+          }, "-=1.8");
+
+        // 2. Parallax Effect on Hero Image
+        gsap.to(".hero-bg", {
+            yPercent: 15,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".hero",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+
+        // 3. Scroll Reveal Elements (Fade Up)
+        const fadeUpElements = gsap.utils.toArray('.gs-fade-up');
+        fadeUpElements.forEach(elem => {
+            gsap.from(elem, {
+                scrollTrigger: {
+                    trigger: elem,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 40,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out"
+            });
+        });
+
+        // 4. Parallax Effect on Featured Case Study Image
+        gsap.to(".parallax-img", {
+            yPercent: 15,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".featured",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+
+        // 5. Vanilla JS Lightbox Implementation
+        const galleryItems = document.querySelectorAll('.gallery-item img');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const closeBtn = document.querySelector('.lightbox-close');
+
+        galleryItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                // Get the high-res version by modifying unsplash URL parameters
+                let imgSrc = e.target.src.replace('&w=800', '&w=1600').replace('&w=1200', '&w=1600').replace('&h=1422', '').replace('&h=675','').replace('&h=1200','').replace('&h=1000','');
+                lightboxImg.src = imgSrc;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden'; 
+            });
+        });
+
+        const closeLightbox = () => {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto'; 
+        };
+
+        closeBtn.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => {
+            if(e.target !== lightboxImg) {
+                closeLightbox();
+            }
+        });
+        
+        // Escape key to close lightbox
+        document.addEventListener('keydown', (e) => {
+            if(e.key === "Escape" && lightbox.classList.contains('active')) {
+                closeLightbox();
+            }
+        });
+    </script>
+</body>
+</html>
